@@ -109,6 +109,32 @@ classmate or trainer try it, open the Ports tab, right-click port 3000 and set
 A codespace stops after a period of inactivity, and the JSON-file log resets
 with it. That is fine for a class; it is not somewhere to keep real data.
 
+### Deploying to Railway
+
+1. Go to railway.com and **sign in with GitHub**.
+2. **New Project -> Deploy from GitHub repo**, authorise Railway, pick this repo.
+3. It detects Node from package.json and deploys using railway.json
+   (start command: node server.js, health check: /health).
+4. **Variables** tab -> add:
+
+   | Variable   | Value |
+   |------------|-------|
+   | `SIMULATE` | `1`   |
+
+   Without this the test console at `/` returns 404. Railway sets `PORT` itself,
+   so do not add one.
+5. **Settings -> Networking -> Generate Domain** to get a public URL.
+6. Open the URL. The test console loads at `/`.
+
+**To keep the log between restarts**, add a database: **New -> Database -> MySQL**
+in the same project. Railway injects `MYSQLHOST`, `MYSQLUSER` and friends, which
+`store.js` reads automatically — no configuration needed, and the tables are
+created on first boot. Without it the log lives in a JSON file that resets every
+time the container restarts.
+
+Railway runs on trial credit rather than a permanent free tier, so check the
+current plan limits before relying on it for anything long-lived.
+
 ### Putting it online for others to test
 
 `render.yaml` is included, so a free Render deployment needs no configuration:

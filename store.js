@@ -8,7 +8,17 @@
 const fs = require('fs');
 const path = require('path');
 
-const useDb = !!process.env.DB_HOST;
+/* Railway's MySQL plugin injects MYSQLHOST/MYSQLUSER/... rather than DB_*.
+   Accept either, so adding the plugin is all it takes to make the log persist. */
+const DB = {
+  host: process.env.DB_HOST || process.env.MYSQLHOST,
+  port: Number(process.env.DB_PORT || process.env.MYSQLPORT || 3306),
+  user: process.env.DB_USER || process.env.MYSQLUSER,
+  password: process.env.DB_PASSWORD || process.env.MYSQLPASSWORD,
+  database: process.env.DB_NAME || process.env.MYSQLDATABASE
+};
+
+const useDb = !!DB.host;
 let pool = null;
 
 const FILE = path.join(__dirname, 'data', 'store.json');
@@ -52,22 +62,20 @@ CREATE TABLE IF NOT EXISTS wa_log (
 
 async function init() {
   if (!useDb) {
-    console.log('[store] MySQL not configured (DB_HOST unset) — using JSON file at ' + FILE);
+    console.log('[store] MySQL not configured — using JSON file at ' + FILE +
+                ' (resets whenever the container restarts)');
     return;
   }
   const mysql = require('mysql2/promise');
   pool = mysql.createPool({
-    host: process.env.DB_HOST,
-    port: Number(process.env.DB_PORT || 3306),
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
+    host: DB.host, port: DB.port, user: DB.user,
+    password: DB.password, database: DB.database,
     connectionLimit: 5,
     timezone: 'Z'
   });
   await pool.query(DDL_SESSIONS);
   await pool.query(DDL_LOG);
-  console.log('[store] MySQL ready (' + process.env.DB_NAME + ')');
+  console.log('[store] MySQL ready (' + DB.database + ' @ ' + DB.host + ')');
 }
 
 async function getSession(phone) {
