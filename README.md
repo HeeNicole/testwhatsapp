@@ -91,6 +91,24 @@ npm start
 "New customer" gives you a fresh pretend phone number so you can replay the
 first-contact flow.
 
+### Fastest way to run it online: GitHub Codespaces
+
+No cloud account needed beyond GitHub, and nothing to install locally.
+
+1. On the repo page: **Code -> Codespaces -> Create codespace on main**.
+2. Wait for it to build. The devcontainer installs dependencies and creates a
+   working .env for you, with SIMULATE=1 already set.
+3. In the codespace terminal, run: npm start
+4. A notification offers to open the forwarded port 3000 — that is the test
+   console. Or use the **Ports** tab and click the globe icon on port 3000.
+
+By default a forwarded port is **private to your GitHub account**. To let a
+classmate or trainer try it, open the Ports tab, right-click port 3000 and set
+**Port Visibility -> Public**. Set it back to private when you are done.
+
+A codespace stops after a period of inactivity, and the JSON-file log resets
+with it. That is fine for a class; it is not somewhere to keep real data.
+
 ### Putting it online for others to test
 
 `render.yaml` is included, so a free Render deployment needs no configuration:

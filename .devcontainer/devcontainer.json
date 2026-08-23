@@ -1,0 +1,24 @@
+{
+  "name": "PayrollBuddy",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
+
+  // Install dependencies and create a working .env with SIMULATE=1 already set,
+  // so the test console is reachable the moment the codespace opens.
+  "postCreateCommand": "npm install && [ -f .env ] || cp .env.example .env",
+
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": {
+      "label": "PayrollBuddy test console",
+      "onAutoForward": "openPreview"
+    }
+  },
+
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "files.eol": "\n"
+      }
+    }
+  }
+}
