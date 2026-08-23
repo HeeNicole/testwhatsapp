@@ -210,8 +210,19 @@ app.post('/webhook', express.raw({ type: '*/*' }), async (req, res) => {
   }
 });
 
-/* ------------------------- local testing without Meta ---------------------- */
-if (process.env.SIMULATE === '1') {
+/* ---------------------------------------------------------------------------
+ * Test console.
+ * Enabled explicitly with SIMULATE=1. Also enabled automatically when no
+ * WhatsApp credentials are configured — without a token the service cannot be
+ * talking to real customers, so exposing the console costs nothing. As soon as
+ * a real token is set it switches off again unless SIMULATE=1 is explicit,
+ * and SIMULATE=0 always forces it off.
+ * ------------------------------------------------------------------------- */
+const HAS_WHATSAPP = !!(process.env.WHATSAPP_TOKEN && process.env.WHATSAPP_PHONE_NUMBER_ID);
+const SIMULATE_ON = process.env.SIMULATE === '1' ||
+                    (!HAS_WHATSAPP && process.env.SIMULATE !== '0');
+
+if (SIMULATE_ON) {
   // Browser test console at / — same engine, no phone number needed.
   app.use(express.static(require('path').join(__dirname, 'public')));
 
@@ -224,7 +235,8 @@ if (process.env.SIMULATE === '1') {
       res.status(500).json({ error: err.message });
     }
   });
-  console.log('[sim] POST /simulate enabled — no WhatsApp needed');
+  console.log('[sim] test console enabled at / — ' +
+    (process.env.SIMULATE === '1' ? 'SIMULATE=1' : 'no WhatsApp credentials configured'));
 }
 
 app.get('/health', (_req, res) => res.json({ ok: true, store: store.useDb ? 'mysql' : 'file' }));
@@ -236,7 +248,9 @@ store.init()
     app.listen(PORT, '0.0.0.0', () => {
       console.log(`[server] listening on 0.0.0.0:${PORT}`);
       console.log(`[server] PORT from environment: ${process.env.PORT || '(not set — using 3000)'}`);
-      console.log(`[server] test console: ${process.env.SIMULATE === '1' ? 'ENABLED at /' : 'DISABLED (set SIMULATE=1 to enable)'}`);
+      console.log('[server] test console: ' + (SIMULATE_ON ? 'ENABLED at /'
+        : process.env.SIMULATE === '0' ? 'DISABLED (SIMULATE=0)'
+        : 'DISABLED (WhatsApp credentials present; set SIMULATE=1 to force on)'));
     });
   })
   .catch(err => { console.error('[startup]', err); process.exit(1); });
