@@ -230,5 +230,13 @@ if (process.env.SIMULATE === '1') {
 app.get('/health', (_req, res) => res.json({ ok: true, store: store.useDb ? 'mysql' : 'file' }));
 
 store.init()
-  .then(() => app.listen(PORT, () => console.log(`[server] listening on :${PORT}`)))
+  .then(() => {
+    // Bind 0.0.0.0 explicitly — container platforms route to the external
+    // interface, and PORT must come from the platform, not from our default.
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`[server] listening on 0.0.0.0:${PORT}`);
+      console.log(`[server] PORT from environment: ${process.env.PORT || '(not set — using 3000)'}`);
+      console.log(`[server] test console: ${process.env.SIMULATE === '1' ? 'ENABLED at /' : 'DISABLED (set SIMULATE=1 to enable)'}`);
+    });
+  })
   .catch(err => { console.error('[startup]', err); process.exit(1); });
