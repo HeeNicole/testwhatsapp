@@ -1,0 +1,38 @@
+# Bahasa Malaysia coverage check — formal BM, not Manglish.
+# Run:  node sweep.js questions-bm.txt
+
+Adakah elaun perjalanan tertakluk kepada caruman KWSP?
+Adakah elaun makan dikenakan cukai pendapatan?
+Adakah elaun rumah tertakluk kepada caruman PERKESO?
+Adakah elaun telefon dikenakan KWSP?
+Bonus tahunan tertakluk kepada caruman PERKESO?
+Adakah kerja lebih masa tertakluk kepada KWSP?
+Adakah komisen tertakluk kepada caruman KWSP?
+Adakah caj perkhidmatan tertakluk kepada PERKESO?
+Adakah bayaran ganjaran dikenakan cukai?
+Adakah pampasan pemberhentian kerja tertakluk kepada KWSP?
+Adakah bayaran gantian notis tertakluk kepada PCB?
+Adakah tuntutan perubatan tertakluk kepada KWSP?
+Berapakah hari cuti tahunan bagi pekerja tiga tahun perkhidmatan?
+Berapakah hari cuti sakit setahun?
+Berapakah hari cuti bersalin yang layak?
+Berapakah hari cuti paterniti?
+Berapakah jam bekerja seminggu di Sarawak?
+Pekerja di Sabah tertakluk kepada akta yang mana?
+Bolehkah majikan memotong gaji pekerja kerana lewat?
+Bagaimanakah cara mengira gaji bulan tidak genap?
+Pekerja perempuan mengandung bolehkah diberhentikan kerja?
+Adakah pekerja sambilan perlu dicarumkan PERKESO?
+Adakah pekerja dalam tempoh percubaan perlu mencarum KWSP?
+Adakah pelatih perlu dicarumkan KWSP dan PERKESO?
+Bilakah perlu mendaftarkan pekerja baharu dengan PERKESO?
+Bilakah majikan perlu menghantar Borang E kepada LHDN?
+Apakah tanggungjawab majikan apabila pekerja berhenti kerja?
+Berapa lama perlu menyimpan rekod gaji?
+Apakah itu SKBBK dan siapa yang menanggung caruman?
+Adakah Skim LINDUNG 24 Jam wajib bagi pekerja tempatan?
+Berapakah kadar caruman KWSP semasa?
+Berapakah siling gaji PERKESO sekarang?
+Berapakah gaji minimum semasa?
+Adakah pekerja asing tertakluk kepada PERKESO?
+LHDN sedang menjalankan audit ke atas syarikat kami, apa perlu dibuat?

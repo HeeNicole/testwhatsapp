@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PayrollBuddy — test console</title>
+<style>
+  :root{
+    --bg:#0b141a; --panel:#111b21; --in:#1f2c33; --out:#005c4b; --ink:#e9edef;
+    --muted:#8696a0; --line:#222d34; --accent:#00a884;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    display:flex;flex-direction:column;height:100vh}
+  header{background:var(--panel);border-bottom:1px solid var(--line);padding:10px 14px;
+    display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .who{width:38px;height:38px;border-radius:50%;background:var(--accent);color:#04231c;
+    display:grid;place-items:center;font-weight:800;font-size:14px}
+  h1{font-size:15px;margin:0;font-weight:600}
+  header small{display:block;color:var(--muted);font-size:12px;font-weight:400}
+  .tools{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .tools input{background:var(--in);border:1px solid var(--line);color:var(--ink);
+    border-radius:8px;padding:6px 9px;font:inherit;font-size:12.5px;width:150px}
+  .tools button{background:var(--in);border:1px solid var(--line);color:var(--ink);
+    border-radius:8px;padding:6px 11px;font-size:12.5px;cursor:pointer}
+  .tools button:hover{border-color:var(--accent);color:var(--accent)}
+  #log{flex:1;overflow-y:auto;padding:18px 14px;display:flex;flex-direction:column;gap:8px}
+  .row{display:flex}
+  .row.me{justify-content:flex-end}
+  .bub{max-width:min(78%,620px);padding:8px 11px;border-radius:10px;background:var(--in);
+    white-space:pre-wrap;overflow-wrap:anywhere;font-size:14.5px;box-shadow:0 1px 1px rgba(0,0,0,.3)}
+  .row.me .bub{background:var(--out)}
+  .bub b{font-weight:700}
+  .bub i{font-style:italic;color:#cfd8dc}
+  .bub a{color:#53bdeb}
+  .meta{color:var(--muted);font-size:11px;text-align:center;margin:6px 0}
+  form{display:flex;gap:8px;padding:12px 14px;background:var(--panel);border-top:1px solid var(--line)}
+  form input{flex:1;background:var(--in);border:1px solid var(--line);color:var(--ink);
+    border-radius:20px;padding:11px 15px;font:inherit}
+  form input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  form button{background:var(--accent);border:0;color:#04231c;font-weight:700;
+    border-radius:20px;padding:11px 20px;cursor:pointer}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;padding:0 14px 10px;background:var(--panel)}
+  .chips button{background:var(--in);border:1px solid var(--line);color:var(--muted);
+    border-radius:14px;padding:5px 10px;font-size:12px;cursor:pointer}
+  .chips button:hover{color:var(--accent);border-color:var(--accent)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="who">PB</div>
+  <div>
+    <h1>PayrollBuddy — test console</h1>
+    <small>Same engine the WhatsApp bot uses. No phone number required.</small>
+  </div>
+  <div class="tools">
+    <input id="from" value="60123456789" title="Pretend sender number — change it to start a fresh conversation">
+    <button id="reset" type="button">New customer</button>
+  </div>
+</header>
+
+<div id="log">
+  <div class="meta">Type a payroll question in English or Malay. The bot will ask for your company name first, exactly as it would on WhatsApp.</div>
+</div>
+
+<div class="chips">
+  <button data-q="elaun kereta kena EPF ke?">elaun kereta kena EPF ke?</button>
+  <button data-q="Adakah elaun makan tertakluk kepada caruman PERKESO?">Adakah elaun makan tertakluk…?</button>
+  <button data-q="Is overtime subject to EPF?">Is overtime subject to EPF?</button>
+  <button data-q="berapa hari cuti paterniti?">berapa hari cuti paterniti?</button>
+  <button data-q="apa itu SKBBK?">apa itu SKBBK?</button>
+  <button data-q="AGENT">AGENT</button>
+</div>
+
+<form id="f">
+  <input id="q" autocomplete="off" placeholder="Type a message…">
+  <button type="submit">Send</button>
+</form>
+
+<script>
+var log = document.getElementById('log');
+
+function esc(s){ return String(s).replace(/[&<>]/g, function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]; }); }
+
+/* Render WhatsApp markup the way WhatsApp does. */
+function wa(t){
+  return esc(t)
+    .replace(/(^|\s)\*([^*\n]+)\*/g, '$1<b>$2</b>')
+    .replace(/(^|\s)_([^_\n]+)_/g, '$1<i>$2</i>')
+    .replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+}
+
+function bubble(text, mine){
+  var row = document.createElement('div');
+  row.className = 'row' + (mine ? ' me' : '');
+  row.innerHTML = '<div class="bub">' + wa(text) + '</div>';
+  log.appendChild(row);
+  log.scrollTop = log.scrollHeight;
+}
+function meta(t){
+  var d = document.createElement('div');
+  d.className = 'meta'; d.textContent = t;
+  log.appendChild(d); log.scrollTop = log.scrollHeight;
+}
+
+async function send(text){
+  if (!text.trim()) return;
+  bubble(text, true);
+  try{
+    var res = await fetch('simulate', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ from: document.getElementById('from').value.trim(), text: text })
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status + ' — is SIMULATE=1 set on the server?');
+    var data = await res.json();
+    (data.replies || []).forEach(function(r, i){
+      setTimeout(function(){ bubble(r, false); }, 220 * (i + 1));
+    });
+  } catch(err){
+    meta('Error: ' + err.message);
+  }
+}
+
+document.getElementById('f').addEventListener('submit', function(e){
+  e.preventDefault();
+  var q = document.getElementById('q');
+  send(q.value); q.value = '';
+});
+document.querySelector('.chips').addEventListener('click', function(e){
+  var b = e.target.closest('button[data-q]');
+  if (b) send(b.dataset.q);
+});
+document.getElementById('reset').addEventListener('click', function(){
+  var n = '60' + Math.floor(100000000 + Math.random() * 899999999);
+  document.getElementById('from').value = n;
+  log.innerHTML = '';
+  meta('New customer: +' + n + ' — the bot will ask for a company name again.');
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+# Deploy to Render (free tier) for a test run with no WhatsApp number.
+#
+# 1. Push this repo to GitHub.
+# 2. render.com > New > Blueprint > pick the repo.
+# 3. Open the service URL — the browser test console is at /.
+#
+# Notes:
+#   SIMULATE=1 turns on the test console at / and the POST /simulate endpoint.
+#   Turn it OFF once a real WhatsApp number is connected.
+#   With DB_HOST unset the log is a JSON file on ephemeral disk — it resets on
+#   every redeploy. Fine for testing, not for production.
+services:
+  - type: web
+    name: payrollbuddy
+    runtime: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: node server.js
+    healthCheckPath: /health
+    envVars:
+      - key: SIMULATE
+        value: "1"
+      - key: NODE_VERSION
+        value: "20"
+      # Set these later, in the Render dashboard, when the WhatsApp number is ready.
+      # Never put real tokens in this file — it is committed to the repo.
+      - key: WHATSAPP_TOKEN
+        sync: false
+      - key: WHATSAPP_PHONE_NUMBER_ID
+        sync: false
+      - key: WHATSAPP_VERIFY_TOKEN
+        sync: false
+      - key: WHATSAPP_APP_SECRET
+        sync: false
+      - key: HANDOVER_NOTIFY_NUMBER
+        sync: false

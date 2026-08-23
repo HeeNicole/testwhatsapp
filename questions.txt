@@ -1,0 +1,94 @@
+# PayrollBuddy — question sweep
+#
+# REPLACE THESE WITH YOUR REAL CUSTOMER QUESTIONS.
+# Copy them out of your WhatsApp history exactly as customers typed them —
+# typos, Manglish, short forms and all. That is the whole point: the engine has
+# to survive real phrasing, not tidy phrasing.
+#
+# One question per line. Lines starting with # are ignored.
+# Run:  npm run sweep
+
+# ---- allowances ----------------------------------------------------------
+Is transport allowance subject to EPF, SOCSO, income tax or HRDF?
+elaun kereta kena EPF ke?
+fixed petrol allowance RM300 sebulan kena socso tak?
+staff claim petrol guna resit, kena EPF?
+elaun makan kena EPF?
+meal allowance subject to socso?
+elaun telefon kena epf?
+is handphone allowance taxable?
+housing allowance kena epf socso?
+elaun shift kena socso?
+attendance allowance kena epf ke?
+COLA kena epf?
+childcare allowance kena cukai?
+parking claim kena epf?
+medical claim kena epf ke?
+
+# ---- wages, OT, bonus ----------------------------------------------------
+OT kena EPF tak?
+is overtime subject to socso?
+bonus kena epf socso?
+annual bonus kena socso ke?
+commission kena epf?
+service charge kena socso?
+
+# ---- termination ---------------------------------------------------------
+notice pay kena pcb?
+staff resign tak cukup notis, potong gaji kena epf?
+retrenchment benefit kena cukai?
+gratuity kena epf?
+bayar balik cuti tahunan tak guna, kena epf?
+
+# ---- foreign workers & SKBBK --------------------------------------------
+pekerja asing kena socso?
+do we deduct SOCSO for a foreign worker earning above RM5,000?
+foreign worker kena epf tak?
+SKBBK apa?
+lindung 24 jam wajib ke untuk pekerja tempatan?
+SKBBK berapa peratus?
+SKBBK majikan kena bayar sama ke?
+
+# ---- entitlements --------------------------------------------------------
+berapa hari cuti tahunan untuk staff dah kerja 3 tahun?
+cuti sakit berapa hari setahun?
+maternity leave berapa hari?
+paternity leave berapa hari?
+paternity limit how many kids?
+berapa jam kerja seminggu?
+sarawak punya working hours berapa jam?
+staff kat sabah guna akta mana?
+
+# ---- procedural ----------------------------------------------------------
+macam mana nak daftar pekerja baru dengan socso?
+bila kena hantar borang E?
+EA form bila kena bagi kat staff?
+CP22 tu apa?
+staff nak berhenti, kena isi borang apa untuk LHDN?
+PCB kena bayar sebelum bila?
+berapa lama kena simpan record payroll?
+
+# ---- rates (must never be answered from memory) -------------------------
+kadar caruman EPF berapa?
+socso ceiling berapa sekarang?
+gaji minimum sekarang berapa?
+HRDF levy berapa peratus?
+EPF untuk staff umur 60 tahun ke atas berapa?
+
+# ---- disputes & out of scope --------------------------------------------
+macam mana nak apply permit pekerja asing?
+LHDN buat audit kat kami, macam mana?
+staff saman kami kat industrial court
+
+# ---- things customers really ask that may NOT be covered yet ------------
+boleh potong gaji staff sebab datang lambat?
+staff MC tapi tak bagi surat doktor, boleh potong gaji?
+macam mana kira gaji prorate untuk staff join tengah bulan?
+macam mana kira rate OT?
+staff kerja public holiday, berapa kali gaji?
+annual leave boleh carry forward ke tahun depan?
+staff perempuan pregnant boleh buang kerja tak?
+probation staff kena EPF ke?
+part time staff kena socso?
+intern kena epf socso?
+director tak amik gaji, kena epf?

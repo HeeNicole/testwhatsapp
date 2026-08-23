@@ -1,0 +1,23 @@
+{
+  "name": "payrollbuddy-whatsapp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "WhatsApp Cloud API bot answering Malaysian statutory payroll questions",
+  "main": "server.js",
+  "scripts": {
+    "sync": "node sync-kb.js",
+    "start": "node server.js",
+    "dev": "node server.js",
+    "report": "node report.js",
+    "test": "node test-engine.js",
+    "sweep": "node sweep.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "mysql2": "^3.11.5"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
