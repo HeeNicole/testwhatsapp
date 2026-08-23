@@ -248,6 +248,18 @@ store.init()
     app.listen(PORT, '0.0.0.0', () => {
       console.log(`[server] listening on 0.0.0.0:${PORT}`);
       console.log(`[server] PORT from environment: ${process.env.PORT || '(not set — using 3000)'}`);
+
+      /* Deployment shim: a host's public domain sometimes forwards to a port it
+         guessed before the app ever ran (commonly 3000 or 8080) rather than the
+         PORT it injected. Listening on the usual suspects as well costs nothing
+         in a single-tenant container and avoids a dead public URL. Safe to
+         delete once the domain's target port is known to be correct. */
+      for (const alt of [3000, 8080]) {
+        if (alt === PORT) continue;
+        app.listen(alt, '0.0.0.0')
+           .on('listening', () => console.log(`[server] also listening on 0.0.0.0:${alt}`))
+           .on('error', e => console.log(`[server] alt port ${alt} unavailable (${e.code}) — ignored`));
+      }
       console.log('[server] test console: ' + (SIMULATE_ON ? 'ENABLED at /'
         : process.env.SIMULATE === '0' ? 'DISABLED (SIMULATE=0)'
         : 'DISABLED (WhatsApp credentials present; set SIMULATE=1 to force on)'));
